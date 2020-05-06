@@ -7,7 +7,7 @@ from firebase_admin import db
 
 db_url = 'https://firstproject-afb38.firebaseio.com/'
 
-cred = credentials.Certificate("C:\\Users\\hsh96\\Desktop\\firstproject\\public\\firstproject-afb38-firebase-adminsdk-r6fpm-9c4723acd5.json")
+cred = credentials.Certificate("C:\\Users\\hsh96\\Desktop\\firstproject\\public\\firstproject-afb38-firebase-adminsdk-r6fpm-9c4723acd5.json", decoding=UTF-8)
 
 default_app = firebase_admin.initialize_app(cred, {'databaseURL':db_url})
 
