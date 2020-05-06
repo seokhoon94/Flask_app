@@ -7,7 +7,7 @@ from firebase_admin import db
 
 db_url = 'https://firstproject-afb38.firebaseio.com/'
 
-cred = credentials.Certificate("Flask_app/firstproject-afb38-firebase-adminsdk-r6fpm-9c4723acd5.json")
+cred = credentials.Certificate("C:\Users\hsh96\Desktop\FlaskApp\firstproject-afb38-firebase-adminsdk-r6fpm-9c4723acd5.json")
 
 default_app = firebase_admin.initialize_app(cred, {'databaseURL':db_url})
 
@@ -24,6 +24,6 @@ def main():
  
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0', port=5000)
 
 
