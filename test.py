@@ -6,7 +6,7 @@ app = Flask (__name__)
  
 @app.route('/')
 def main():
-    f = open("C:\\Users\\hsh96\\Desktop\\FlaskApp\\hi.txt", 'r')
+    f = open("hi.txt", 'r')
     data = f.read()
     f.close() 
     return data  
