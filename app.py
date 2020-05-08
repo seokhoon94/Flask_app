@@ -17,18 +17,15 @@ row = ref.get()
  
 app = Flask (__name__)
  
-@app.route('/3.16.114.166')
-def main1():
-    "test"
+@app.route('/')
+def main():
+    return "test"
  
-@app.route('/3.16.114.166/i')
-def colon(row):
+@app.route('/i')
+def colon():
   return row
 
-def main():
-   
-    retern
- 
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
