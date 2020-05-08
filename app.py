@@ -22,7 +22,7 @@ def main1():
     "test"
  
 @app.route('3.16.114.166'/i)
-def colon(row)
+def colon(row):
   return row
 
 def main():
