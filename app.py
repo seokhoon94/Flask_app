@@ -17,10 +17,15 @@ row = ref.get()
  
 app = Flask (__name__)
  
-@app.route('/')
+@app.route('3.16.114.166')
+ "test"
+ 
+@app.route('3.16.114.166'/i)
+def colon(row)
+  return row
 def main():
    
-    return row
+    retern 0
  
 
 if __name__ == "__main__":
