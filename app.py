@@ -18,11 +18,13 @@ row = ref.get()
 app = Flask (__name__)
  
 @app.route('3.16.114.166')
- "test"
+def main1():
+    "test"
  
 @app.route('3.16.114.166'/i)
 def colon(row)
   return row
+
 def main():
    
     retern 0
