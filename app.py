@@ -21,7 +21,7 @@ app = Flask (__name__)
 def main1():
     "test"
  
-@app.route('/3.16.114.166'/i)
+@app.route('/3.16.114.166/i')
 def colon(row):
   return row
 
