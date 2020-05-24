@@ -56,7 +56,7 @@ def test(target):
 
    #print(total_score)
 
-   return total_score
+   return str(total_score)
 
 
 if __name__ == "__main__":
