@@ -40,7 +40,7 @@ app = Flask (__name__)
 @app.route('/<target>')
 
 def test(target):
-   ref = db.reference('EmotionalAnalysis/{}').format(target)
+   ref = db.reference(('EmotionalAnalysis/{}').format(target))
    record = ref.child('record').get()
 
 
