@@ -1,7 +1,9 @@
 from flask import Flask, render_template
 from flask import Flask
 from markupsafe import escape
+
 from konlpy.tag import Okt
+twitter = Okt()
 
 import firebase_admin
 from firebase_admin import credentials
@@ -9,6 +11,7 @@ from firebase_admin import db
 
 import json
 
+app = Flask (__name__)
 db_url = 'https://firstproject-afb38.firebaseio.com/'
 cred = credentials.Certificate("firstproject-afb38-firebase-adminsdk-r6fpm-9c4723acd5.json")
 default_app = firebase_admin.initialize_app(cred, {'databaseURL':db_url})
@@ -36,25 +39,47 @@ class KnuSL():
       
       return s_word
 
-app = Flask (__name__)
+
 @app.route('/<target>')
 
 def test(target):
-   ref = db.reference(('EmotionalAnalysis/{}').format(target))
-   record = ref.child('record').get()
+   ref = db.reference(('DailyRecord/{}').format(target))
+   GroupN_date = ref.order_by_key().limit_to_last(1).get()
 
+   for key, val in GroupN_date.items():  # 참조한 돌봄일지의 record 저장
+      for key, val in val.items():
+         most_recent_diary = key
+         if key == 'record':
+            record = val
+            break
 
    ksl = KnuSL
-   testlist = twitter.morphs(record)
-   total_score = 0
-
-   for j in range(0, len(testlist)):
-      wordname = testlist[j]
+   morphemes_of_record = twitter.morphs(record)
+   record_score = 0  # record 점수 계산
+   for j in range(0, len(morphemes_of_record)):
+      wordname = morphemes_of_record[j]
       if ksl.data_list(wordname) != 'None':
-         total_score += int(ksl.data_list(wordname))
-         #print(wordname)
+         record_score += int(ksl.data_list(wordname))
 
-   #print(total_score)
+   meal_score = 0  # meal 점수 계산
+   medicine_score = 0  # medicine 점수 계산
+   condition_score = 0
+
+   for key, val in GroupN_date.items():
+      for key, val in val.items():
+         for i in range(1, 4):
+            if key == 'meal' + str(i):
+               meal_score += val
+            if key == 'medicine' + str(i) + 'check':
+               medicine_score += val
+         if key == 'condition':
+            condition_score = val  # condition 점수 계산
+
+   total_score = record_score + meal_score + medicine_score + condition_score
+
+
+   ref = db.reference(('Group/{}').format(target))  # 위험도 업데이트
+   ref.update({'risk': total_score})
 
    return str(total_score)
 
