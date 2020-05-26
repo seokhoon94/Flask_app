@@ -72,7 +72,7 @@ def test(target):
                if val != "":
                   meal_score += 1
             if key == 'medicine' + str(i) + 'check':
-               if val != "":
+               if val != "false":
                   medicine_score += 1
          if key == 'condition':
             condition_score = val  # condition 점수 계산
