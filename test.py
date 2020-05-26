@@ -69,13 +69,15 @@ def test(target):
       for key, val in val.items():
          for i in range(1, 4):
             if key == 'meal' + str(i):
-               meal_score += val
+               if val != "":
+                  meal_score += 1
             if key == 'medicine' + str(i) + 'check':
-               medicine_score += val
+               if val != "":
+                  medicine_score += 1
          if key == 'condition':
             condition_score = val  # condition 점수 계산
 
-   total_score = record_score + meal_score + medicine_score + condition_score
+   total_score = record_score + meal_score + medicine_score + int(condition_score)
 
 
    ref = db.reference(('Group/{}').format(target))  # 위험도 업데이트
