@@ -41,7 +41,6 @@ class KnuSL():
 
 
 @app.route('/<target>')
-
 def test(target):
    ref = db.reference(('DailyRecord/{}').format(target))
    GroupN_date = ref.order_by_key().limit_to_last(1).get()
@@ -85,6 +84,9 @@ def test(target):
 
    return str(total_score)
 
+@app.route('/servercheck')
+def check():
+   return 'server is running'
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
