@@ -105,18 +105,12 @@ def hello_world(target):
 
   series = pd.Series(lst2, index=lst)
 
-  from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
-
   diff_1 = series.diff(periods=1).iloc[1:]
-
-  plot_acf(diff_1)
-  plot_pacf(diff_1)
 
 
   model = ARIMA(series, order=(0, 1, 1))
   model_fit = model.fit(trend='nc', full_output=True, disp=1)
 
-  model_fit.plot_predict()
   fore = model_fit.forecast(steps=1)
 
 
