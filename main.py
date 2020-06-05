@@ -92,39 +92,35 @@ default_app = firebase_admin.initialize_app(cred, {'databaseURL':db_url})
 
 @app.route('/predict/<target>')
 def hello_world(target):
-    db_url = 'https://firstproject-afb38.firebaseio.com/'
-    cred = credentials.Certificate("firstproject-afb38-firebase-adminsdk-r6fpm-9c4723acd5.json")
-    default_app = firebase_admin.initialize_app(cred, {'databaseURL': db_url})
-
-    ref = db.reference(('WaterValue/{}').format(target))
-    js = ref.order_by_key().limit_to_last(365).get()
+  ref = db.reference(('WaterValue/{}').format(target))
+  js = ref.order_by_key().limit_to_last(365).get()
 
 
-    lst = []
-    lst2 = []
+  lst = []
+  lst2 = []
 
-    for data in js:
-        lst.append(data)
-        lst2.append(js[data])
+  for data in js:
+      lst.append(data)
+      lst2.append(js[data])
 
-    series = pd.Series(lst2, index=lst)
+  series = pd.Series(lst2, index=lst)
 
-    from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+  from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 
-    diff_1 = series.diff(periods=1).iloc[1:]
+  diff_1 = series.diff(periods=1).iloc[1:]
 
-    plot_acf(diff_1)
-    plot_pacf(diff_1)
-
-    
-    model = ARIMA(series, order=(0, 1, 1))
-    model_fit = model.fit(trend='nc', full_output=True, disp=1)
-
-    model_fit.plot_predict()
-    fore = model_fit.forecast(steps=1)
+  plot_acf(diff_1)
+  plot_pacf(diff_1)
 
 
-    return str(fore[0])
+  model = ARIMA(series, order=(0, 1, 1))
+  model_fit = model.fit(trend='nc', full_output=True, disp=1)
+
+  model_fit.plot_predict()
+  fore = model_fit.forecast(steps=1)
+
+
+  return str(fore[0])
 
 
 
