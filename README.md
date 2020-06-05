@@ -1,74 +1,16 @@
-KNU ÇÑ±¹¾î °¨¼º»çÀü
+//ì‹¤ì‹œê°„ ì›ê²©ê²€ì¹¨
+WaterVal.py
 
+//ëŒë´„ì¼ì§€ ë¶„ì„
+DailyRecordRisk.py
 
-ÀÛ¼ºÀÚ : ¿Âº´¿ø, ¹Ú»ó¹Î, ³ªÃ¶¿ø
-ÀÛ¼ºÀÏ : 2018.05.11
-¼Ò¼Ó : ±º»ê´ëÇÐ±³ ¼ÒÇÁÆ®¿þ¾îÀ¶ÇÕ°øÇÐ°ú Data Intelligence Lab
-È¨ÆäÀÌÁö : http://dilab.kunsan.ac.kr/
+//í•œêµ­ì–´ ê°ì„±ì‚¬ì „
+KnSentiLex
+data
+SentiWord_Dict.txt
+neg_pol_word.txt
+obj_unknown_pol_word.txt
+pos_pol_word.txt
 
-
-<> °³¿ä
-- À½½Ä, ¿©ÇàÁö, ¿µÈ­, À½¾Ç, ÀÚµ¿Â÷, ½º¸¶Æ®Æù, °­ÀÇ, ÄÄÇ»ÅÍ µî Æ¯Á¤ µµ¸ÞÀÎ¿¡¼­ »ç¿ëµÇ´Â ±àºÎÁ¤¾îº¸´Ù´Â ÀÎ°£ÀÇ º¸ÆíÀûÀÎ ±âº» °¨Á¤ Ç¥ÇöÀ» ³ªÅ¸³»´Â ±àºÎÁ¤¾î·Î ±¸¼ºµÈ´Ù. º¸ÆíÀûÀÎ ±àÁ¤ Ç¥ÇöÀ¸·Î´Â ¡®°¨µ¿¹Þ´Ù¡¯, ¡®°¡Ä¡ ÀÖ´Ù¡¯, ¡®°¨»çÇÏ´Ù¡¯¿Í º¸ÆíÀûÀÎ ºÎÁ¤ Ç¥ÇöÀ¸·Î´Â ¡®±×Àú ±×·¸´Ù¡¯, ¡®µµÀúÈ÷ ~¼ö ¾ø´Ù¡¯, ¡®¿­ ¹Þ´Ù¡¯ µîÀ» µÑ ¼ö ÀÖ´Ù.
-- °¢ µµ¸ÞÀÎÀÇ °¨¼º»çÀüÀ» ºü¸£°Ô ±¸ÃàÇÏ±â À§ÇÑ ±âÃÊ ÀÚ·á·Î È°¿ëÇÏ±â À§ÇØ °³¹ßµÇ¾úÀ½ 
-- º» ÇÑ±¹¾î °¨¼º»çÀüÀº ´ÙÀ½°ú °°Àº ¼Ò½º·ÎºÎÅÍ ÅëÇÕµÇ¾î °³¹ßµÇ¾úÀ½
-  (1) ±¹¸³±¹¾î¿ø Ç¥ÁØ±¹¾î´ë»çÀüÀÇ ¶æÇ®ÀÌ(glosses) ºÐ¼®À» ÅëÇÑ ±àºÎÁ¤ ÃßÃâ(ÀÌ ¹æ¹ýÀ» ÅëÇØ ´ëºÎºÐÀÇ ±àºÎÁ¤¾î ÃßÃâ)
-  (2) ±èÀº¿µ(2004)ÀÇ ±àºÎÁ¤¾î ¸ñ·Ï
-  (3) SentiWordNet ¹× SenticNet-5.0¿¡¼­ ÁÖ·Î »ç¿ëµÇ´Â ±àºÎÁ¤¾î ¹ø¿ª
-  (4) ÃÖ±Ù ¿Â¶óÀÎ¿¡¼­ ¸¹ÀÌ »ç¿ëµÇ´Â Ãà¾à¾î ¹× ±àºÎÁ¤ ÀÌ¸ðÆ¼ÄÜ ¸ñ·Ï
-- ÃÑ 14,843°³ÀÇ 1-gram, 2-gram, °ü¿ë±¸, ¹®Çü, Ãà¾à¾î, ÀÌ¸ðÆ¼ÄÜ µî¿¡ ´ëÇÑ ±àÁ¤, Áß¸³, ºÎÁ¤ ÆÇº° ¹× Á¤µµ(degree)°ª °è»ê
-
-
-<> Æ¯Â¡
-- Ç¥ÁØ±¹¾î´ë»çÀüÀ» ±¸¼ºÇÏ´Â °¢ ´Ü¾îÀÇ ¶æÇ®ÀÌ¸¦ ºÐ¼®ÇÏ¿© ±àºÎÁ¤¾î¸¦ ÃßÃâÇÏ¿´À½
-- 1-gram, 2-gram, n-gram(¾î±¸, ¹®Çü), Ãà¾à¾î, ÀÌ¸ðÆ¼ÄÜ µîÀÇ ´Ù¾çÇÑ Á¾·ùÀÇ ±àºÎÁ¤¾î Æ÷ÇÔ
-- ¿µÈ­, À½¾Ç, ÀÚµ¿Â÷ µî ¾î¶² µµ¸ÞÀÎ¿¡µµ »ç¿ëµÉ ¼ö ÀÖ´Â º¸ÆíÀûÀÎ ±àºÎÁ¤¾î·Î ±¸¼º
-
-
-<> ÇÑ±¹¾î °¨¼º»çÀü °³¹ß ¹æ¹ý
-- Ç¥ÁØ±¹¾î´ë»çÀüÀ» ±¸¼ºÇÏ´Â Çü¿ë»ç, ºÎ»ç, µ¿»ç, ¸í»çÀÇ ¸ðµç ¶æÇ®ÀÌ¿¡ ´ëÇÑ ±àÁ¤, Áß¸³, ºÎÁ¤À¸·Î ºÐ·ùÇÏ±â À§ÇØ Bi-LSTM µö ·¯´× ¸ðµ¨ »ç¿ë
-- Bi-LSTM ¸ðµ¨Àº °¢ ¶æÇ®ÀÌÀÇ È®·ü °ªÀ» °è»êÇÏ¿© ÃÖÁ¾ÀûÀ¸·Î 300,000°³¿¡ ´ÞÇÏ´Â ¶æÇ®ÀÌ¸¦ ±àÁ¤, Áß¸³, ºÎÁ¤À¸·Î ºÐ·ùÇÏ¸ç, ±àÁ¤À¸·Î ºÐ·ùµÈ ¶æÇ®ÀÌ ±×·ì¿¡¼­ top-2500 ±àÁ¤¾î ÃßÃâÇÏ¸ç, ºñ½ÁÇÑ ¹æ½ÄÀ¸·Î top-2500 ºÎÁ¤¾î ÃßÃâ (»óÀ§ 2,500°³ÀÇ ¶æÇ®ÀÌ¸¸À» ´ë»óÀ¸·Î ±àºÎÁ¤¾î¸¦ Ã£´Â ÀÌÀ¯´Â 2,500°³ ÀÌ»ó ³Ñ¾î°¡¸é ±âÃßÃâµÈ ±àºÎÁ¤¾îµéÀÌ ¹Ýº¹ÀûÀ¸·Î ÃßÃâµÇ±â ¶§¹®)
-- ÃÖ¼Ò 3¸íÀÇ Æò°¡ÀÚµéÀÌ °¢ ´Ü¾îÀÇ ±àÁ¤, Áß¸³, ºÎÁ¤À» ÆÇº°ÇÏ°í, ÀÌÀÇ°¡ ÀÖÀ» °æ¿ì Åä·ÐÀ» ÅëÇØ ÇÕÀÇ¸¦ ÀÌ·ç´Â ¹æ½Ä »ç¿ë (voting ¹æ½Ä)
-- °¢ ´Ü¾îÀÇ ±àºÎÁ¤ ÆÇº°Àº (1) ¸Å¿ì ºÎÁ¤ (2) ºÎÁ¤ (3) Áß¸³ (4) ±àÁ¤ (5) ¸Å¿ì ±àÁ¤ µî ¸®Ä¿Æ® Ã´µµ¸¦ ÀÌ¿ëÇÏ¿© Æò°¡ÀÚµéÀÇ ÇÕÀÇ¸¦ ÅëÇØ ¼±ÅÃ
-
-
-<> ±àºÎÁ¤¾î Åë°è
------------------------
-  ±àºÎÁ¤¾î        : ´Ü¾î°³¼ö
------------------------
- 1-gram ±àºÎÁ¤¾î  : 6,223
- 2-gram ±àºÎÁ¤¾î  : 7,861
- ±àºÎÁ¤ ¾î±¸      :   278
- ±àºÎÁ¤ ¹®Çü      :   253
- ±àºÎÁ¤ Ãà¾à¾î    :   174
- ±àºÎÁ¤ ÀÌ¸ðÆ¼ÄÜ  :    54 
------------------------
- 1-gram ±àºÎÁ¤¾î  : 6,451
- 2-gram ±àºÎÁ¤¾î  : 8,135
- 3-gram ±àºÎÁ¤¾î  :   226
- 4-gram ±àºÎÁ¤¾î  :    20
- 5-gram ±àºÎÁ¤¾î  :     5
- 6-gram ±àºÎÁ¤¾î  :     3
- 7-gram ±àºÎÁ¤¾î  :     2
- 8-gram ±àºÎÁ¤¾î  :     1
------------------------
- ¸Å¿ì ±àÁ¤        : 2,597
- ±à    Á¤         : 2,266
- Áß    ¸³         :   154
- ºÎ    Á¤         : 5,029
- ¸Å¿ì ºÎÁ¤        : 4,797
-
-
-<> »ç¿ë ¹æ¹ý
--  knusl.pyÆÄÀÏ ½ÇÇà
-- ´Ü¾î ÀÔ·ÂÀ» ÅëÇØ ÇØ´ç ´Ü¾îÀÇ ÇàÅÂ¼Ò ¹× ±Ø¼º Á¤µµ°ª Ãâ·Â
-
-
-<> Âü°í¹®Çå
-[1] Ç¥ÁØ±¹¾î´ë»çÀü ¶æÇ®ÀÌ, https://github.com/mrchypark/stdkor
-[2] ±àºÎÁ¤ Ãà¾à¾î,  https://ko.wikipedia.org/wiki/%EB%8C%80%ED%95%9C%EB%AF%BC%EA%B5%AD%EC%9D%98_%EC%9D%B8%ED%84%B0%EB%84%B7_%EC%8B%A0%EC%A1%B0%EC%96%B4_%EB%AA%A9%EB%A1%9D
-[3] ±àºÎÁ¤ ÀÌ¸ðÆ¼ÄÜ,  https://ko.wikipedia.org/wiki/%EC%9D%B4%EB%AA%A8%ED%8B%B0%EC%BD%98
-[4] SentiWordNet_3.0.0_20130122, http://sentiwordnet.isti.cnr.it/
-[5] SenticNet-5.0, http://sentic.net/
-[6] °¨Á¤´Ü¾î»çÀü0603, http://datascience.khu.ac.kr/board/bbs/board.php?bo_table=05_01&wr_id=91
-[7] ±èÀº¿µ, ¡°±¹¾î °¨Á¤µ¿»ç ¿¬±¸¡±, 2004.02, ÇÐÀ§³í¹®(¹Ú»ç) - Àü³²´ëÇÐ±³ ±¹¾î±¹¹®ÇÐ°ú ´ëÇÐ¿ø
-[8] Æ®À§ÅÍ ÇüÅÂ¼Ò ºÐ¼®±â, https://github.com/twitter/twitter-korean-text
+//firebase SDK
+firstproject-afb38-firebase-adminsdk-r6fpm-9c4723acd5.json
