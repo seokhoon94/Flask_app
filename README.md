@@ -12,5 +12,5 @@ neg_pol_word.txt
 obj_unknown_pol_word.txt
 pos_pol_word.txt
 
-//firebase SDK
+//firebaseSDK\
 firstproject-afb38-firebase-adminsdk-r6fpm-9c4723acd5.json
