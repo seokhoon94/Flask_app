@@ -13,6 +13,28 @@ default_app = firebase_admin.initialize_app(cred, {'databaseURL':db_url})
 import pandas as pd
 from statsmodels.tsa.arima_model import ARIMA
 
+def predict_WaterVal():
+  ref = db.reference('WaterValue/ID')
+  js = ref.order_by_key().limit_to_last(365).get()
+
+  lst = []
+  lst2 = []
+
+  for data in js:
+      lst.append(data)
+      lst2.append(js[data])
+
+  series = pd.Series(lst2, index=lst)
+
+  diff_1 = series.diff(periods=1).iloc[1:]
+
+  model = ARIMA(series, order=(0, 1, 1))
+  model_fit = model.fit(trend='nc', full_output=True, disp=1)
+
+  fore = model_fit.forecast(steps=1)
+
+  return str(fore[0])
+
 
 #hex_sym_calculate
 import numpy as np
@@ -485,12 +507,20 @@ def mqtt_on_message_cb(client, userdata, msg):
       today_val += current_val
       temp = calculated_data
 
-      today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
-      ref = db.reference('WaterValue/ID') #ID를 독거노인 Uid로 수정해야 함
-      ref.update({('{}').format(today):{
-		'date':('{}').format(today),
-		'value':'%s' %today_val}
-		})
+      today = datetime.date.today()
+      tommorrow = today + datetime.timedelta(days=1)
+
+      ref = db.reference('WaterValue/ID2') #ID를 독거노인 Uid로 수정해야 함
+	  ref.child(('{}').format(tommorrow)).update({
+	  'predict':('{}').format(predict_WaterVal())}
+	   )
+
+	  ref = db.reference('WaterValue/ID2') #ID를 독거노인 Uid로 수정해야 함
+	  ref.child(('{}').format(today)).update({
+	  'date':('{}').format(today),
+	  'value':'%s' %today_val}
+	   )
+
    #------------------------------------------------------
 
    if enable_log > 0:
