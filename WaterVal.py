@@ -9,6 +9,11 @@ cred = credentials.Certificate("firstproject-afb38-firebase-adminsdk-r6fpm-9c472
 default_app = firebase_admin.initialize_app(cred, {'databaseURL':db_url})
 
 
+#predict_water_val
+import pandas as pd
+from statsmodels.tsa.arima_model import ARIMA
+
+
 #hex_sym_calculate
 import numpy as np
 
@@ -447,11 +452,15 @@ MQTT_CLIENT_ID = 'bridge'
 SUBS_PREFIX = 'thingplug_'
 CONTAINER = 'LoRa'
 
-total_WaterVal = 0
-temp =0
+# WaterVal_ref = db.reference('WaterValue/ID')
+# last_val_ref = WaterVal_ref.order_by_key().limit_to_last(1).get()
+# last_val = list(last_val_ref.values())
+# temp = last_val[0]
+temp = 0
+today_val = 0
 
 def mqtt_on_message_cb(client, userdata, msg):
-   global total_WaterVal
+   global today_val   
    global temp
    # logging.info(msg.topic)
    # logging.info(msg.payload)   
@@ -464,21 +473,25 @@ def mqtt_on_message_cb(client, userdata, msg):
    output_data = current_time + ',' + device_name + ',' + data_payload + ',' + lt_time + '\r\n'
    print (output_data)
    
-   #hex_sym_calculate--------------------
+   #hex_sym_calculate & predict_water_val--------------------
    h1=calculate(9,data_payload)
    h2=calculate(10,data_payload)
    h3=calculate(11,data_payload)
    h4=calculate(12,data_payload)
-   calculated_data = ((h4*10000 +h3*100 + h2)*1000+ h1) * 0.001
-   
+   calculated_data = (h4*10000 + h3*100 + h2)+ h1*0.01
+      
    if calculated_data != temp:
-      total_WaterVal += calculated_data
+      current_val = calculated_data - temp
+      today_val += current_val
       temp = calculated_data
 
       today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
-      ref = db.reference('WaterValue/ID')
-      ref.update({('{} 00:00:00').format(today):'%s' %total_WaterVal})
-   #------------------------------------
+      ref = db.reference('WaterValue/ID') #ID를 독거노인 Uid로 수정해야 함
+      ref.update({('{}').format(today):{
+		'date':('{}').format(today),
+		'value':'%s' %today_val}
+		})
+   #------------------------------------------------------
 
    if enable_log > 0:
       f = open('subscription_mqtt.log','a')
