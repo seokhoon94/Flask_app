@@ -47,7 +47,11 @@ class KnuSL():
 @app.route('/<target>')
 def test(target):
     ref = db.reference(('DailyRecord/{}').format(target))
-    GroupN_date = ref.order_by_key().limit_to_last(4).get()
+    if len(ref.get()) < 4:
+        GroupN_date = ref.order_by_key().get()
+    else:
+        GroupN_date = ref.order_by_key().limit_to_last(4).get()
+
     ksl = KnuSL
     def morphs(word): # record 계산법
         morphemes_of_record = twitter.morphs(word)
