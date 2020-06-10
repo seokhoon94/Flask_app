@@ -66,7 +66,7 @@ def test(target):
     medicine_score = 0  # medicine 점수 계산
     condition_score = 0
     record__score=0
-    count=1
+    count=0
 
     for key, val in GroupN_date.items():
         date = key
