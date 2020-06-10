@@ -49,21 +49,25 @@ def test(target):
     ref = db.reference(('DailyRecord/{}').format(target))
     GroupN_date = ref.order_by_key().limit_to_last(4).get()
     ksl = KnuSL
-
-    def calculator(record):
-        morphemes_of_record = twitter.morphs(record)
+    def morphs(word): # record 계산법
+        morphemes_of_record = twitter.morphs(word)
         record_score = 0  # record 점수 계산
         for j in range(0, len(morphemes_of_record)):
-            wordname = morphemes_of_record[j]
-            if ksl.data_list(wordname) != 'None':
-                record_score += int(ksl.data_list(wordname))
+                    wordname = morphemes_of_record[j]
+                    if ksl.data_list(wordname) != 'None':
+                        record_score += int(ksl.data_list(wordname))
+        return record_score
 
-        meal_score = 0  # meal 점수 계산
-        medicine_score = 0  # medicine 점수 계산
-        condition_score = 0
+    meal_score = 0  # meal 점수 계산
+    medicine_score = 0  # medicine 점수 계산
+    condition_score = 0
+    record__score=0
+    count=1
 
-        for key, val in GroupN_date.items():
-            for key, val in val.items():
+    for key, val in GroupN_date.items():
+        date = key
+        count=count+1
+        for key, val in val.items():
                 for i in range(1, 4):
                     if key == 'meal' + str(i):
                         if val != "":
@@ -73,21 +77,13 @@ def test(target):
                             medicine_score += 1
                 if key == 'condition':
                     condition_score = val  # condition 점수 계산
-
-        total_score = record_score + meal_score + medicine_score + int(condition_score)
-        return total_score
-
-    count = 0
-    for key, val in GroupN_date.items():  # 참조한 돌봄일지의 record 저장
-        date = key
-        for key, val in val.items():
-            most_recent_diary = key
-            if key == 'record':
-                record = val
-                count = count + 1
-                ref = db.reference(('Group/{}').format(target))  # 위험도 업데이트
-                ref.child('risk'+str(count)).update({'date':date[4:8],
-                                                      'value' : calculator(record)})
+                if key == 'record':
+                    record2 = val
+                    record__score = morphs(record2)
+        total_score = record__score + meal_score + medicine_score + int(condition_score)
+        ref = db.reference(('Group/{}').format(target))
+        ref.child('risk' + str(count)).update({'date': date[4:8],
+                                               'value': total_score})
 
 
 @app.route('/servercheck')
