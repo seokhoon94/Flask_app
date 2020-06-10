@@ -33,8 +33,6 @@ def predict_WaterVal():
 
   fore = model_fit.forecast(steps=1)
 
-  print(series)
-
   return str(fore[0][0])
 
 
@@ -519,11 +517,11 @@ def mqtt_on_message_cb(client, userdata, msg):
 
       ref.child(('{}').format(today)).update({
       'date':('{}').format(today),
-      'value':'%s' %today_val}
+      'value':'%f' %today_val}
        )
 
       ref = db.reference('WaterValue/ID')
-      ref.update({('{}').format(today):'%s' %today_val})
+      ref.update({('{}').format(today):'%f' %today_val})
 
    #------------------------------------------------------
 
