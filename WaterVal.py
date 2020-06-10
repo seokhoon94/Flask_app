@@ -510,9 +510,6 @@ def mqtt_on_message_cb(client, userdata, msg):
       today = datetime.date.today()
       tommorrow = today + datetime.timedelta(days=1)
 
-      ref = db.reference('WaterValue/ID')
-      ref.update({('{}').format(today):'%s' %today_val})
-
       ref = db.reference('WaterValue/ID2')
       ref.child(('{}').format(tommorrow)).update({
       'predict':('{}').format(predict_WaterVal())}
@@ -522,6 +519,9 @@ def mqtt_on_message_cb(client, userdata, msg):
       'date':('{}').format(today),
       'value':'%s' %today_val}
        )
+
+      ref = db.reference('WaterValue/ID')
+      ref.update({('{}').format(today):'%s' %today_val})
 
    #------------------------------------------------------
 
