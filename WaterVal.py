@@ -1,6 +1,6 @@
 # -u 7478601330 -p 3e%4p%2e#7 -ni 00000764702c1ffffe547686 -ct LoRa -ae 9999991000000764
 
-#firebase 
+#reference_firebase_DB 
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import db
@@ -87,7 +87,7 @@ def calculate(index,data):
     return int(h)
 
 
-#ThinPlug
+#connect_ThinPlug_ser
 import sys
 import argparse
 import logging
@@ -510,12 +510,14 @@ def mqtt_on_message_cb(client, userdata, msg):
       today = datetime.date.today()
       tommorrow = today + datetime.timedelta(days=1)
 
-      ref = db.reference('WaterValue/ID2') #ID를 독거노인 Uid로 수정해야 함
+      ref = db.reference('WaterValue/ID')
+      ref.update({('{}').format(today):'%s' %today_val})
+
+      ref = db.reference('WaterValue/ID2')
       ref.child(('{}').format(tommorrow)).update({
       'predict':('{}').format(predict_WaterVal())}
       )
 
-      ref = db.reference('WaterValue/ID2') #ID를 독거노인 Uid로 수정해야 함
       ref.child(('{}').format(today)).update({
       'date':('{}').format(today),
       'value':'%s' %today_val}
