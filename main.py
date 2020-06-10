@@ -22,7 +22,7 @@ def predict_WaterVal():
 
   for data in js:
       lst.append(data)
-      lst2.append(js[data])
+      lst2.append(float(js[data]))
 
   series = pd.Series(lst2, index=lst)
 
