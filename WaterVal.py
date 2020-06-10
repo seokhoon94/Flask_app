@@ -22,7 +22,7 @@ def predict_WaterVal():
 
   for data in js:
       lst.append(data)
-      lst2.append(js[data])
+      lst2.append(float(js[data]))
 
   series = pd.Series(lst2, index=lst)
 
@@ -517,11 +517,11 @@ def mqtt_on_message_cb(client, userdata, msg):
 
       ref.child(('{}').format(today)).update({
       'date':('{}').format(today),
-      'value':'%s' %today_val}
+      'value':'%f' %today_val}
        )
 
       ref = db.reference('WaterValue/ID')
-      ref.update({('{}').format(today):'%s' %today_val})
+      ref.update({('{}').format(today):'%f' %today_val})
 
    #------------------------------------------------------
 
