@@ -33,7 +33,7 @@ def predict_WaterVal():
 
   fore = model_fit.forecast(steps=1)
 
-  return str(fore[0, 0])
+  return str(fore[0][0])
 
 
 #hex_sym_calculate
