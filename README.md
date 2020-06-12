@@ -1,8 +1,8 @@
 //실시간 원격검침
 WaterVal.py
 
-//돌봄일지 분석
-DailyRecordRisk.py
+//돌봄일지 분석 및 위험알림
+main.py
 
 //한국어 감성사전
 KnSentiLex
