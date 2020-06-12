@@ -47,10 +47,18 @@ class KnuSL():
 @app.route('/<target>')
 def test(target):
     ref = db.reference(('DailyRecord/{}').format(target))
+    ref2 = db.reference(('Group/{}').format(target))
     if len(ref.get()) < 4:
         GroupN_date = ref.order_by_key().get()
     else:
         GroupN_date = ref.order_by_key().limit_to_last(4).get()
+
+
+
+    if 'risk1' in ref2.get():
+        for i in range(1,5,1):
+            ref2.child('risk'+str(i)).set({'date' : "",'value' : 0})
+
 
     ksl = KnuSL
     def morphs(word): # record 계산법
@@ -85,9 +93,10 @@ def test(target):
                     record2 = val
                     record__score = morphs(record2)
         total_score = record__score + meal_score + medicine_score + int(condition_score)
-        ref = db.reference(('Group/{}').format(target))
-        ref.child('risk' + str(count)).update({'date': date[4:8],
+        ref2.child('risk' + str(count)).update({'date': date[4:8],
                                                'value': total_score})
+    ref2.child('RiskDate').set(date[4:8])
+    ref2.child('Risk').set(total_score)
 
 
 @app.route('/servercheck')
