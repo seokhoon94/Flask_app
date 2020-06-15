@@ -55,16 +55,16 @@ def error_check(UID):
   if guardian_token != "null":
        token_list.append(ref.child('guardian_token').get())
 
-  if risk < -8:
-     if error > 3:
+  if risk <= -8:
+     if error >= 3:
          for x in range(len(token_list)):
              send_message(token_list[x])
   elif (-7 <= risk <= 7):
-       if error > 5:
+       if error >= 5:
          for x in range(len(token_list)):
              send_message(token_list[x])
-  elif  risk > 8:
-       if error > 10:
+  elif  risk >= 8:
+       if error >= 10:
          for x in range(len(token_list)):
              send_message(token_list[x])
 
