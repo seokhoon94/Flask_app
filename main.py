@@ -37,7 +37,7 @@ def error_check(UID):
   yesterday = today - datetime.timedelta(days=1)
 
   ref = db.reference(('Group/{}/Risk').format(UID))
-  risk = ref.get()
+  risk = float(ref.get())
 
   ref =  db.reference('WaterValue/ID2')
   today_value = ref.child(('{}/value').format(yesterday)).get()
