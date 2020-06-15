@@ -53,7 +53,7 @@ def error_check(UID):
       if ref.child(('manager{}_token').format(x)).get() != "null":
           token_list.append(ref.child(('manager{}_token').format(x)).get())
   if guardian_token != "null":
-       token_list.append(ref.child(guardian_token_token).get())
+       token_list.append(ref.child(guardian_token).get())
 
   if risk < -8:
      if error > 3:
