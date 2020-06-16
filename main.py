@@ -27,10 +27,10 @@ from apscheduler.jobstores.base import JobLookupError
 
 push_service = FCMNotification(api_key='AAAAkyLbc_g:APA91bHbxHV_Xfl8-CaFCFNQy_dD_s9PO5aikbG89JZ8gpi0T8Oga8saiu0d1GaicZwhWF53akjBxfjhKH016aNDhGNUV2dc6ZNwau7kDJherVqaK_hEjb0hOgkSMSsvQTdKqkYC7iwc')
 
-def send_message(token):
+def send_message(token, name):
   result = push_service.notify_single_device(registration_id=token,
                                                message_title='위험 경고',
-                                               message_body='독거노인의 위험이 의심됩니다. 자택에 방문해 주세요')
+                                               message_body='{} 독거노인의 위험이 의심됩니다. 자택에 방문해 주세요'.format(name))
 
 def error_check(UID):
   today = datetime.date.today()
@@ -49,6 +49,9 @@ def error_check(UID):
   guardian_token = ref.child('guardian_token').get()
   token_list= []
 
+  ref = db.reference(('users/{}').format(UID))
+  user_name = ref.child().get()
+
   for x in range(1,4):
       if ref.child(('manager{}_token').format(x)).get() != "null":
           token_list.append(ref.child(('manager{}_token').format(x)).get())
@@ -58,15 +61,15 @@ def error_check(UID):
   if risk <= -8:
      if error >= 3:
          for x in range(len(token_list)):
-             send_message(token_list[x])
+             send_message(token_list[x], user_name)
   elif (-7 <= risk <= 7):
        if error >= 5:
          for x in range(len(token_list)):
-             send_message(token_list[x])
+             send_message(token_list[x], user_name)
   elif  risk >= 8:
        if error >= 10:
          for x in range(len(token_list)):
-             send_message(token_list[x])
+             send_message(token_list[x], user_name)
 
 
 twitter = Okt()
