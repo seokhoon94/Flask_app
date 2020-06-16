@@ -30,7 +30,7 @@ push_service = FCMNotification(api_key='AAAAkyLbc_g:APA91bHbxHV_Xfl8-CaFCFNQy_dD
 def send_message(token, name):
   result = push_service.notify_single_device(registration_id=token,
                                                message_title='위험 경고',
-                                               message_body='%s 독거노인의 위험이 의심됩니다. 자택에 방문해 주세요' %name)
+                                               message_body=name + '독거노인의 위험이 의심됩니다. 자택에 방문해 주세요')
 
 def error_check(UID):
   today = datetime.date.today()
